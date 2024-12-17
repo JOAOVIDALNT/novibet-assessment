@@ -1,3 +1,6 @@
+using iphound.API.Models.Entities.HttpModels.Responses;
+using iphound.API.Utils;
+
 namespace iphound.API.Providers.Service.IpService;
 
 public class IpService : IIpService
@@ -9,12 +12,16 @@ public class IpService : IIpService
         _httpClient = httpClient; 
     }
 
-    public async Task<bool> Test(string ip)
+    public async Task<IpInfoResponse> RequestIp(string ip)
     {
         var request = await _httpClient.GetAsync(ip);
 
-        var result = request.Content.ReadAsStringAsync().Result;
+        if (request.IsSuccessStatusCode)
+        {
+            var result = request.Content.ReadAsStringAsync().Result;
+            return result.MapIpInfoResponse();
+        }
         
-        return true;
+        return new IpInfoResponse() { Success = false };    
     }
 }

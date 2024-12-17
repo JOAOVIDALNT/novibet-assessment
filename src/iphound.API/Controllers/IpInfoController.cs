@@ -12,7 +12,7 @@ public class IpInfoController : ControllerBase
     [HttpGet]
     public IActionResult Test([FromServices] IIpService service, string ip)
     {
-        var result = service.Test(ip);
+        var result = service.RequestIp(ip);
         return Ok(result);
     }
     
