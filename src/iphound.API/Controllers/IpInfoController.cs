@@ -1,5 +1,8 @@
 using iphound.API.Models.Entities;
-using iphound.API.Providers.Service.IpService;
+using iphound.API.Models.HttpModels.Responses;
+using iphound.API.Providers.Service.ApiService;
+using iphound.API.Providers.Service.AppService;
+using iphound.API.Providers.Service.DatabaseService;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +12,17 @@ namespace iphound.API.Controllers;
 [Route("[controller]")]
 public class IpInfoController : ControllerBase
 {
-    [HttpGet]
-    public IActionResult Test([FromServices] IIpService service, string ip)
+    [HttpGet("FetchData")]
+    public async Task<IActionResult> FetchIpInfo([FromServices] IAppService service, string ip)
     {
-        var result = service.RequestIp(ip);
+        var result = await service.FetchDataAsync(ip);
+        return Ok(result);
+    }
+    
+    [HttpGet("CountryReport")]
+    public ActionResult<List<CountryReportResponse>> CountryReport([FromServices] IDatabaseService service)
+    {
+        var result = service.GetCountryReport();
         return Ok(result);
     }
     

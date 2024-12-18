@@ -6,11 +6,13 @@ namespace iphound.API.Data.Context;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    public DbSet<IpInfo> IpInfos { get; set; }
+    public DbSet<Country> Countries { get; set; }
+    public DbSet<IpAddress> IpAddresses { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
-        modelBuilder.ApplyConfiguration(new IpInfoMap());
+        modelBuilder.ApplyConfiguration(new CountryMap());
+        modelBuilder.ApplyConfiguration(new IpAddressMap());
     }
 }
